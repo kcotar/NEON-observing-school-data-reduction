@@ -1,0 +1,19 @@
+Steps to be taken for the reduction of NOTCam NirIR images (short exposure, many images, high background, dithering)
+
+1 Create a flat:
+- median combine and mode scale flats with some weak sigma clipping
+- repeat for high and low flats
+- create final normalized flat as (high - low) / median(high - low)
+
+2 Sky substraction using python code
+- determine range of images and flat images
+- determine if you want a running median sky for the substraction
+- run	sky_substraction.py
+- creates normalized sky substracted images
+- outputs list to be used in iraf
+
+3 Create final image
+- run imcombine function on final list of reduced images
+- for offset use world as it stacks images using ra and dec information
+- offset determined by determine_shifts.py are not usefull for  iraf imcombine/imshift functions
+- run and show final image
