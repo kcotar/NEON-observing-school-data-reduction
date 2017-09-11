@@ -8,8 +8,8 @@ D) j032224_psf.fits   #        # Input PSF image and (optional) diffusion kernel
 E) 1                   # PSF fine sampling factor relative to data 
 F) none                # Bad pixel mask (FITS image or ASCII coord list)
 G) none                # File with parameter constraints (ASCII file) 
-H) 1    1366   1    1367   # Image region to fit (xmin xmax ymin ymax)
-I) 100    100          # Size of the convolution box (x y)
+H) 200    1200   200    1200   # Image region to fit (xmin xmax ymin ymax)
+I) 75    75          # Size of the convolution box (x y)
 J) 26.563              # Magnitude photometric zeropoint 
 K) 0.234  0.234        # Plate scale (dx dy)    [arcsec per pixel]
 O) regular             # Display type (regular, curses, both)
@@ -30,25 +30,36 @@ P) 0                   # Choose: 0=optimize, 1=model, 2=imgblock, 3=subcomps
 #   par)    par value(s)    fit toggle(s)    # parameter description 
 # -----------------------------------------------------------------------------
 
-# Object number: 1
-0) sersic       # object type
-1) 622 817 0 0  # position x,y
-3) 15 1         # integrated magnitude
-4) 20 1         # half-light radius [px]
+# Object number: galaxy1
+0) expdisk      # object type
+1) 625 820 1 1  # position x,y
+3) 17 1         # integrated magnitude
+4) 8 1          # half-light radius [px]
 5) 4 1          # sersic index
-9) 1 0          # axis ration
-10) 0 0         # position angle
+9) 0.6 1          # axis ration
+10) -75 1         # position angle
 Z) 0            # output level 
 
-# Object number: 2
+# Object number: galaxy2
 0) sersic
-1) 860 646 0 0
-3) 15 1
-4) 40 1
-5) 4 1
-9) 1 1
-10) 0 1
+1) 860 646 1 1
+3) 16 1
+4) 24 1
+5) 2 1
+9) 0.4 1
+10) 80 1
+Z) 0
+
+# Object number: core1
+0) psf
+1) 860 646 1 1
+3) 18 1
+Z) 0
+
+# Object number: core2
+0) psf
+1) 624 820 1 1
+3) 19 1
 Z) 0
 
 ================================================================================
-
