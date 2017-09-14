@@ -1,22 +1,30 @@
+# ----------------------------------------------------
+# ---------- IRAF script for spectra preprocessing ---
+# ----------------------------------------------------
+
+# select iraf package
 noao
 imred
 ccdred
 
-ccdproc "" fixpix=no
-
 # create bias frame
-delete bias_s.fits
-zerocombine input=@list_bias_s output=bias_s combine=median
+delete bias_l.fits
+zerocombine input=@list_bias_l output=bias_l combine=median
 
 # create flat frame
-imarith @list_flat_s - bias_s @list_flat_nobias_s
-delete flat_s.fits
-flatcombine input=@list_flat_nobias_s output=flat_s combine=median scale=mode statsec="[150:400,2500:3000]" process=no delete=yes
-imstat flat_s
+imarith @list_flat_l - bias_l @list_flat_nobias_l
+delete flat_l_temp.fits
+flatcombine input=@list_flat_nobias_l output=flat_l_temp combine=median scale=mode statsec="[850:1050,2400:2800]" process=no delete=yes
 
+# normalize flat field frame
+delete flat_l_temp_sub.fits
+imcopy flat_l_temp[850:1050,2400:2800] flat_l_temp_sub
+imstat images=flat_s_temp_sub fields=mode format=no > flat_stat.log
+delete flat_l.fits
+imarith flat_l_temp / @flat_stat.log flat_l
 
-# create corrected science images
-#delete @list_J170341_nobias
-#imarith @list_J170341 - bias_s @list_J170341_nobias
-#delete @list_J170341_reduced
-#imarith @list_J170341_nobias / flat_s @list_J170341_reduced
+# create bias corrected and flatened science images
+delete @list_J032224_nobias
+imarith @list_J032224 - bias_l @list_J032224_nobias
+delete @list_J032224_red
+imarith @list_J032224_nobias / flat_l @list_J032224_red
