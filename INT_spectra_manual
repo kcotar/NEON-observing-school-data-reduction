@@ -1,0 +1,49 @@
+How to deal with slit spectra - the quick way
+
+- locate package noao -> imred -> kpnoslit
+
+- imartih to remove bias from observed spectra
+
+- look at cosmetics.cl for functions and steps
+
+Master bias:
+- median combine bias frames
+
+Master flat:
+- substract master bias values from all flat exposures
+- median combine all de-biased flat and scale them properly -> master flat
+- normalize master flat to a range 0..1
+
+Spectra tracing and extraction:
+- substract master bias values from all science exposures
+- flatten (divide by master flat) all science exposures
+- apall procedure
+- run it on every exposure (and trace) individuatlly
+- determine traces and background ranges
+- background fitting function and order
+- use apall with reference trace to extract arc spectra without background substraction
+- mean combine spectra from different exposures (assuming wavelength sollution is the same for all exposures allong the dispersion axis)
+
+Wavelength callibration:
+- use identify
+- supply the list of possible emission lines to the identify function
+- on the arc spectra mark few (3-6) lines, then do the automatic identification of others
+- remove ouliers, modify function to be fitted
+- save results
+
+Applying wvl solution to the spectra:
+- use dispcor on the arc image
+- modify header of the final combined spectra (hedit function of fv-tool)
+- using fv-tool add REFSPEC1 parameter that points to the indentified arc spectra
+
+Spectra normalization:
+- use continuum function
+
+Meassurement of fluxes and EW:
+- using the splot plotting tool in iraf
+- press d, then g/v, a, a, n, q, q or something very simillar
+
+SDSS spectra in iraf:
+- export the spectra from fits to dat using sdss_to_csv.py
+- run rspectext (with dtype='nonlinear') to create corresponding fits file
+- meassure fluxes from the spectra
